@@ -18,20 +18,19 @@ namespace EasyDotNet.TypeSelector
             {
                 this.UrlBuilder = urlBuilder;
             }
+            else
+            {
+                this.UrlBuilder = new PlainUrlBuilder();
+            }
             if (itemBuilder != null)
             {
                 this.ItemBuilder = itemBuilder;
             }
-            this.UrlBuilder = new DefautlUrlBuilder();
+            else
+            {
+            }
         }
-        /// <summary>
-        /// 设置UrlBuilder的Context,仅当UrlBuilder没有Context的时候设置 如： <see cref="DefautlUrlBuilder"/>
-        /// </summary>
-        /// <param name="context"></param>
-        public void SetRequestContext(RequestContext context)
-        {
-            this.UrlBuilder.SetContext(context);
-        }
+        
         public IUrlBuider UrlBuilder { get; set; }
         public IItemBuilder ItemBuilder { get; set; }
 
@@ -46,7 +45,7 @@ namespace EasyDotNet.TypeSelector
             StringBuilder html = new StringBuilder();
             foreach(var item in items)
             {
-                var data = UrlBuilder.BuildUrl(item.Key, item.Value);
+                var data = UrlBuilder.BuildUrl(Param,item);
                 html.Append(ItemBuilder.BuildItem(data));
             }
             return html.ToString();
@@ -54,7 +53,7 @@ namespace EasyDotNet.TypeSelector
         public Task<string> WriteAsync(string Param,Dictionary<string,string> items)
         {
             var task = new Task<string>(() => this.Write(Param, items));
-            //task.Start();
+            task.Start();
             return task;
         }
     }

@@ -11,16 +11,12 @@ namespace EasyDotNet.TypeSelector
     /// <remarks>设置<see cref="IDictionary{string, TValue}"/> 时请使用stringCompare.ordiaIgoncase </remarks>
     public interface IUrlBuider
     {
-        void SetExclude(IEnumerable<string> ExcludeParams);
+        List<string> Excludes { get; }
         /// <summary>
-        /// 设置要包含的数据
+        /// 要特殊包含的项目
+        /// <para>注意此字典应该是忽略大小的字典</para>
         /// </summary>
-        void SetInclude(IEnumerable<KeyValuePair<string, string>> Includes);
-        /// <summary>
-        /// 设置url数据
-        /// </summary>
-        void SetQueryData(Dictionary<string, string> querys);
-        void SetContext(RequestContext context);
-        UrlData BuildUrl(string Param,string Text);
+        Dictionary<string,string> Includes { get; }
+        UrlData BuildUrl(string Param,KeyValuePair<string,string> handerValue);
     }
 }
