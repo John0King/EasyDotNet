@@ -1,0 +1,56 @@
+﻿@model List<DemoWeb.Controllers.data>
+@using EasyDotNet.TypeSelector;
+@using EasyDotNet.CoreMVC;
+@using EasyDotNet.CoreMVC.TagHelpers;
+@addTagHelper *, EasyDotNet.CoreMVC
+<style>
+    a{
+        padding:0 10px;
+    }
+    a.on{
+        color:red !important ;
+    }
+</style>
+<br />
+<br />
+<p>
+    @*@{ 
+        var urlbuilder = new HttpUrlBuilder(this.Context);
+        urlbuilder.UseFullUrlMode = true;
+        var ts = new TypeSelector(urlbuilder,new SimpleItemBuilder());
+        var dic = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        dic[""] = "All";
+        for(var i = 0; i <= 3; i++)
+        {
+            dic[i.ToString()] = i.ToString();
+
+        }
+
+        <span>Fileter by Type</span> @Html.Raw(await ts.WriteAsync("t",dic))
+    }*@
+
+    <cs-typeselector Param="t" Items-全部="" Items-好="5" url-builder="new HttpUrlBuilder(this.Context)"
+                     item-builder="new SimpleItemBuilder()"></cs-typeselector>
+
+</p>
+<ul>
+    <li>title ------type -----time</li>
+    @foreach(var item in Model)
+    {
+        <li>@item.Title --- @item.Type --- @item.Time</li>
+
+    }
+</ul>
+
+<div class="panel panel-primary">
+    <div class="panel-heading">url test</div>
+    <div class="panel-body">
+        @{ 
+            var ub = new HttpUrlBuilder(this.Context);
+            ub.Includes.Add("a", "A");
+            ub.Includes.Add("好", "还");
+            var b = ub.BuildUrl("", new KeyValuePair<string, string>(null, null));
+            @b.Url;
+        }
+    </div>
+</div>
