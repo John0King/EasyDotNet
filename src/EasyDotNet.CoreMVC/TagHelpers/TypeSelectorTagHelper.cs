@@ -23,7 +23,9 @@ namespace EasyDotNet.CoreMVC.TagHelpers
         /// 在此属性里面，与普通的设置键值设置是反的，即： Key = text ; value = value
         /// </summary>
         [HtmlAttributeName(DictionaryAttributePrefix = "Items-")]
-        public Dictionary<string, string> Items { get; set; } = new Dictionary<string, string>();
+        public Dictionary<string, string> Items { get; } = new Dictionary<string, string>();
+        [HtmlAttributeName(DictionaryAttributePrefix =null)]
+        public Dictionary<string, string> MainItems { get; set; } = new Dictionary<string, string>();
         [HtmlAttributeName]
         public string Param { get; set; }
         [HtmlAttributeName]
@@ -44,6 +46,7 @@ namespace EasyDotNet.CoreMVC.TagHelpers
             else
             {
                 // from DI
+                ts.ItemBuilder = ViewContext.HttpContext.RequestServices.GetService(typeof(IItemBuilder)) as IItemBuilder;
             }
             if(ts.UrlBuilder != null)
             {
@@ -52,8 +55,13 @@ namespace EasyDotNet.CoreMVC.TagHelpers
             else
             {
                 // from DI
+                ts.UrlBuilder = ViewContext.HttpContext.RequestServices.GetService(typeof(IUrlBuider)) as IUrlBuider;
             }
-            output.Content.AppendHtml(await ts.WriteAsync(this.Param, this.Items));
+            output.TagName = null;
+            var items = new List<KeyValuePair<string, string>>();
+            items.AddRange(Items.ToDictionary(x => x.Value, x => x.Key));
+            items.AddRange(MainItems);
+            output.PostContent.AppendHtml(await ts.WriteAsync(this.Param, items));
         }
 
     }

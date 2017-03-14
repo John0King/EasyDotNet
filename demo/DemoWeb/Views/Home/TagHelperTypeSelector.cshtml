@@ -29,8 +29,10 @@
         <span>Fileter by Type</span> @Html.Raw(await ts.WriteAsync("t",dic))
     }*@
 
-    <cs-typeselector Param="t" Items-全部="" Items-好="5" url-builder="new HttpUrlBuilder(this.Context)"
-                     item-builder="new SimpleItemBuilder()"></cs-typeselector>
+    <cs-typeselector Param="t" Items-全部="" Items-好="5" Items-刚刚="6" items="@(new  Dictionary<string, string>(){ {"号","sfds"} })" url-builder="new HttpUrlBuilder(this.Context)"
+                     item-builder="new SimpleItemBuilder()"
+                     
+                     >选项：</cs-typeselector>
 
 </p>
 <ul>
@@ -38,7 +40,6 @@
     @foreach(var item in Model)
     {
         <li>@item.Title --- @item.Type --- @item.Time</li>
-
     }
 </ul>
 

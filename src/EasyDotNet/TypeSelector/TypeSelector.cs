@@ -40,7 +40,7 @@ namespace EasyDotNet.TypeSelector
         /// <param name="Param">参数名称</param>
         /// <param name="items">项目值， &lt;a href=[Key]&gt; [Value] &lt;a&gt; </param>
         /// <returns></returns>
-        public string Write(string Param,Dictionary<string,string> items)
+        public string Write(string Param, IEnumerable<KeyValuePair<string, string>> items)
         {
             StringBuilder html = new StringBuilder();
             foreach(var item in items)
@@ -50,11 +50,9 @@ namespace EasyDotNet.TypeSelector
             }
             return html.ToString();
         }
-        public Task<string> WriteAsync(string Param,Dictionary<string,string> items)
+        public Task<string> WriteAsync(string Param,IEnumerable<KeyValuePair<string,string>> items)
         {
-            var task = new Task<string>(() => this.Write(Param, items));
-            task.Start();
-            return task;
+            return Task.Run(()=>this.Write(Param,items));
         }
     }
 }

@@ -51,5 +51,13 @@ namespace EasyDotNet
         {
             return To(() => Convert.ToBoolean(value), defaultvalue.GetValueOrDefault());
         }
+        public static DateTime ToDateTime(object value,DateTime? defaultvalue = null)
+        {
+            return To(() => Convert.ToDateTime(value), defaultvalue.GetValueOrDefault());
+        }
+        public static string ToString(object value,string defaultvalue= "")
+        {
+            return To(() => Convert.ToString(value));
+        }
     }
 }
